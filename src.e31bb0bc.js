@@ -184,7 +184,7 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"sass/base/base.scss":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"sass/gallery.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -234,7 +234,8 @@ var _default = {
   // btnLoad: document.querySelector('[data-btn="load-more"]'),
   searchForm: document.querySelector('[data-form]'),
   galleryList: document.querySelector('[data-gallery]'),
-  galleryContainer: document.querySelector('.gallery-container')
+  galleryContainer: document.querySelector('.gallery-container') // arrowUp: document.querySelector('[data-arrowUp]'),
+
 };
 exports.default = _default;
 },{}],"js/apiService.js":[function(require,module,exports) {
@@ -2581,10 +2582,44 @@ function _default(images) {
 }
 
 ;
-},{"../templates/gallery-tpl.hbs":"templates/gallery-tpl.hbs","./refs":"js/refs.js"}],"index.js":[function(require,module,exports) {
+},{"../templates/gallery-tpl.hbs":"templates/gallery-tpl.hbs","./refs":"js/refs.js"}],"js/arrowUp.js":[function(require,module,exports) {
 "use strict";
 
-var _base = _interopRequireDefault(require("./sass/base/base.scss"));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+class _default {
+  constructor({
+    selector,
+    hidden = true
+  }) {
+    this.refs = this.getRefs(selector);
+    hidden && this.hide();
+  }
+
+  getRefs(selector) {
+    const refs = {};
+    refs.arrowUp = document.querySelector(selector);
+    return refs;
+  }
+
+  show() {
+    this.refs.arrowUp.classList.remove('is-hidden');
+  }
+
+  hide() {
+    this.refs.arrowUp.classList.add('is-hidden');
+  }
+
+}
+
+exports.default = _default;
+},{}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _gallery = _interopRequireDefault(require("./sass/gallery.scss"));
 
 var _PNotify = require("@pnotify/core/dist/PNotify.js");
 
@@ -2604,6 +2639,8 @@ var _AppendGalleryMarkup = _interopRequireDefault(require("./js/AppendGalleryMar
 
 var _refs = _interopRequireDefault(require("./js/refs"));
 
+var _arrowUp = _interopRequireDefault(require("./js/arrowUp"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import debounce from 'lodash.debounce';
@@ -2612,6 +2649,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const apiService = new _apiService.default();
 const loadMoreBtn = new _btnLoadMore.default({
   selector: '[data-btn="load-more"]',
+  hidden: true
+});
+const arrowUp = new _arrowUp.default({
+  selector: '[data-arrowUp]',
   hidden: true
 }); // const apiService = new ApiService();
 // apiService.page = 2;
@@ -2633,6 +2674,7 @@ function catchRequest(event) {
     console.log(images);
     loadMoreBtn.show();
     (0, _makesGalleryMarkup.default)(images);
+    arrowUp.show();
   }).catch(err => {
     (0, _setMessage.default)(_PNotify.error, 'По запросу ничего не найдено', 1000);
     console.log(err);
@@ -2672,7 +2714,10 @@ function onLoad(event) {
 
 loadMoreBtn.refs.button.addEventListener('click', onLoad);
 
-_refs.default.searchForm.addEventListener('submit', catchRequest); // const container = document.getElementById('body');
+_refs.default.searchForm.addEventListener('submit', catchRequest); // window.addEventListener('scroll', function() {
+//   refs.innerHTML = pageYOffset + 'px';
+// });
+// const container = document.getElementById('body');
 // !!! обработать ошибки
 // пробел
 // webformatURL - ссылка на маленькое изображение для списка карточек
@@ -2695,7 +2740,7 @@ _refs.default.searchForm.addEventListener('submit', catchRequest); // const cont
 //   "not IE 11",
 //   "maintained node versions"
 // ]
-},{"./sass/base/base.scss":"sass/base/base.scss","@pnotify/core/dist/PNotify.js":"../node_modules/@pnotify/core/dist/PNotify.js","@pnotify/core/dist/PNotify.css":"../node_modules/@pnotify/core/dist/PNotify.css","@pnotify/core/dist/BrightTheme.css":"../node_modules/@pnotify/core/dist/BrightTheme.css","./js/setMessage":"js/setMessage.js","./js/apiService":"js/apiService.js","./js/btnLoadMore":"js/btnLoadMore.js","./js/makesGalleryMarkup":"js/makesGalleryMarkup.js","./js/AppendGalleryMarkup":"js/AppendGalleryMarkup.js","./js/refs":"js/refs.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./sass/gallery.scss":"sass/gallery.scss","@pnotify/core/dist/PNotify.js":"../node_modules/@pnotify/core/dist/PNotify.js","@pnotify/core/dist/PNotify.css":"../node_modules/@pnotify/core/dist/PNotify.css","@pnotify/core/dist/BrightTheme.css":"../node_modules/@pnotify/core/dist/BrightTheme.css","./js/setMessage":"js/setMessage.js","./js/apiService":"js/apiService.js","./js/btnLoadMore":"js/btnLoadMore.js","./js/makesGalleryMarkup":"js/makesGalleryMarkup.js","./js/AppendGalleryMarkup":"js/AppendGalleryMarkup.js","./js/refs":"js/refs.js","./js/arrowUp":"js/arrowUp.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2723,7 +2768,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63455" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58376" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
