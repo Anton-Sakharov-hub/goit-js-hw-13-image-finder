@@ -222,22 +222,6 @@ function _default(notice, message, delay) {
 }
 
 ;
-},{}],"js/refs.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _default = {
-  btnSubmit: document.querySelector('[data-btn="submit"]'),
-  // btnLoad: document.querySelector('[data-btn="load-more"]'),
-  searchForm: document.querySelector('[data-form]'),
-  galleryList: document.querySelector('[data-gallery]'),
-  galleryContainer: document.querySelector('.gallery-container') // arrowUp: document.querySelector('[data-arrowUp]'),
-
-};
-exports.default = _default;
 },{}],"js/apiService.js":[function(require,module,exports) {
 "use strict";
 
@@ -246,16 +230,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _PNotify = require("@pnotify/core/dist/PNotify.js");
-
-var _setMessage = _interopRequireDefault(require("./setMessage"));
-
-var _refs = _interopRequireDefault(require("./refs"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// const KEY = "23625456-d4d8c01a3246ecf4be3c91fb4";
-// const page = 1;
 class ApiService {
   constructor() {
     this.searchQuery = '';
@@ -264,21 +238,13 @@ class ApiService {
   }
 
   async fetchImg() {
-    return fetch("https://pixabay.com/api/?https://pixabay.com/api/?&q=".concat(this.searchQuery.trim(), "&page=").concat(this.page, "&per_page=12&key=").concat(this.KEY)).then(async response => {
+    return fetch("https://pixabay.com/api/?https://pixabay.com/api/?&q=".concat(this.searchQuery.trim(), "&image_type=photo&orientation=horizontal&page=").concat(this.page, "&per_page=12&key=").concat(this.KEY)).then(async response => {
       this.incrementPage();
-      const serverResponse = await response.json(); // console.log(serverResponse);
-
-      if (serverResponse.total === 0) throw new Error("Ошибка!!!!!!!!!"); // console.log(serverResponse);
-
+      const serverResponse = await response.json();
+      console.log(serverResponse);
+      if (serverResponse.total === 0) throw new Error("Ошибка!");
       return serverResponse;
-    }); // const response = await fetch(`https://pixabay.com/api/?https://pixabay.com/api/?&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${this.KEY}`);
-    // // .then((response) => response.json())
-    // if (response.total === 0) throw new Error("Ошибка!!!!!!!!!");
-    // if (response.ok)
-    //      return response.json();
-    //         this.incrementPage();
-    //     console.log(serverResponse);
-    //     return serverResponse;
+    });
   }
 
   incrementPage() {
@@ -297,41 +263,18 @@ class ApiService {
     this.searchQuery = newQuery;
   }
 
-} // export default async function(searchQuery) {
-//     // const response = await fetch(`https://pixabay.com/api/?key=${KEY}&q=${searchQuery}&image_type=photo&orientation=horizontal&page=${page}&per_page=12`);
-//     const response = await fetch(`https://pixabay.com/api/?https://pixabay.com/api/?&q=${searchQuery}&page=${page}&per_page=12&key=${KEY}`);
-//     if (response.ok) {
-//         incrementPage(page);
-//         return response.json();
-//     };
-//     throw new Error('ошибка запроса!!!');
-// };
-// function incrementPage(page) {
-//     page += 1;
-// };
-// class ApiService {
-//     constructor() {
-//         this.KEY = "23625456-d4d8c01a3246ecf4be3c91fb4";
-//         this.page = 1;
-//     }
-//     async function(searchQuery) {
-//     const response = await fetch(`https://pixabay.com/api/?key=${this.KEY}&q=${searchQuery}&image_type=photo&orientation=horizontal&page=${this.page}&per_page=12`);
-//     if (response.ok)
-//         return response.json();
-//     throw new Error('ошибка запроса!!!');
-//     };
-//     get page(page) {
-//         return this.page;
-//     }
-//     set(newPage) {
-//         this.page = newPage;
-//     }
-// }
-// export const apiService = new ApiService();
+} // const response = await fetch(`https://pixabay.com/api/?https://pixabay.com/api/?&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${this.KEY}`);
+// // .then((response) => response.json())
+// if (response.total === 0) throw new Error("Ошибка!!!!!!!!!");
+// if (response.ok)
+//      return response.json();
+//         this.incrementPage();
+//     console.log(serverResponse);
+//     return serverResponse;
 
 
 exports.default = ApiService;
-},{"@pnotify/core/dist/PNotify.js":"../node_modules/@pnotify/core/dist/PNotify.js","./setMessage":"js/setMessage.js","./refs":"js/refs.js"}],"js/btnLoadMore.js":[function(require,module,exports) {
+},{}],"js/btnLoadMore.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2538,7 +2481,21 @@ const templateFunction = _handlebars.default.template({
 
 var _default = templateFunction;
 exports.default = _default;
-},{"handlebars/dist/handlebars.runtime":"../node_modules/handlebars/dist/handlebars.runtime.js"}],"js/makesGalleryMarkup.js":[function(require,module,exports) {
+},{"handlebars/dist/handlebars.runtime":"../node_modules/handlebars/dist/handlebars.runtime.js"}],"js/refs.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  btnSubmit: document.querySelector('[data-btn="submit"]'),
+  searchForm: document.querySelector('[data-form]'),
+  galleryList: document.querySelector('[data-gallery]'),
+  galleryContainer: document.querySelector('.gallery-container')
+};
+exports.default = _default;
+},{}],"js/makesGalleryMarkup.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2553,14 +2510,13 @@ var _refs = _interopRequireDefault(require("./refs"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import { alert } from '@pnotify/core/dist/PNotify.js';
-// import setMessage from './setMessage';
 function _default(images) {
   const markup = (0, _galleryTpl.default)(images);
   _refs.default.galleryList.innerHTML = markup;
 }
 
 ;
-},{"../templates/gallery-tpl.hbs":"templates/gallery-tpl.hbs","./refs":"js/refs.js"}],"js/AppendGalleryMarkup.js":[function(require,module,exports) {
+},{"../templates/gallery-tpl.hbs":"templates/gallery-tpl.hbs","./refs":"js/refs.js"}],"js/appendGalleryMarkup.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2574,7 +2530,6 @@ var _refs = _interopRequireDefault(require("./refs"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import setMessage from './setMessage';
 function _default(images) {
   const markup = (0, _galleryTpl.default)(images);
 
@@ -2635,7 +2590,7 @@ var _btnLoadMore = _interopRequireDefault(require("./js/btnLoadMore"));
 
 var _makesGalleryMarkup = _interopRequireDefault(require("./js/makesGalleryMarkup"));
 
-var _AppendGalleryMarkup = _interopRequireDefault(require("./js/AppendGalleryMarkup"));
+var _appendGalleryMarkup = _interopRequireDefault(require("./js/appendGalleryMarkup"));
 
 var _refs = _interopRequireDefault(require("./js/refs"));
 
@@ -2654,26 +2609,43 @@ const loadMoreBtn = new _btnLoadMore.default({
 const arrowUp = new _arrowUp.default({
   selector: '[data-arrowUp]',
   hidden: true
-}); // const apiService = new ApiService();
-// apiService.page = 2;
+});
 
-function getQuery(target) {
-  apiService.query = target.elements.query.value.trim();
+function getInputQuery(event) {
+  apiService.query = event.target.elements.query.value.trim();
+}
+
+;
+
+function scrollToNewImages() {
+  _refs.default.galleryContainer.scrollIntoView({
+    behavior: 'smooth',
+    block: 'end'
+  });
+}
+
+;
+
+function checksImgsOnServer(images) {
+  if (images.hits.length === 0) {
+    (0, _setMessage.default)(_PNotify.error, 'Больше нет картинок', 2000);
+    loadMoreBtn.hide();
+  }
+
+  ;
 }
 
 ;
 
 function catchRequest(event) {
   event.preventDefault();
-  const target = event.target;
-  getQuery(target);
+  getInputQuery(event);
   if (apiService.query === '') return;
-  (0, _setMessage.default)(_PNotify.success, 'Загрузка...', 500);
   apiService.resetPages();
+  (0, _setMessage.default)(_PNotify.success, 'Загрузка...', 500);
   apiService.fetchImg().then(images => {
-    console.log(images);
-    loadMoreBtn.show();
     (0, _makesGalleryMarkup.default)(images);
+    loadMoreBtn.show();
     arrowUp.show();
   }).catch(err => {
     (0, _setMessage.default)(_PNotify.error, 'По запросу ничего не найдено', 1000);
@@ -2685,47 +2657,31 @@ function catchRequest(event) {
 
 function onLoad(event) {
   event.preventDefault();
-  loadMoreBtn.disable(); // function loadMore() {
-
-  return apiService.fetchImg().then(images => {
-    console.log(images);
-
-    if (images.hits.length === 0) {
-      (0, _setMessage.default)(_PNotify.error, 'Больше нет картинок', 2000);
-      loadMoreBtn.hide();
-    }
-
-    ;
-    return images;
-  }).then(_AppendGalleryMarkup.default).then(() => {
+  loadMoreBtn.disable();
+  apiService.fetchImg().then(images => {
+    (0, _appendGalleryMarkup.default)(images);
+    scrollToNewImages();
+    checksImgsOnServer(images);
     loadMoreBtn.enable();
-
-    _refs.default.galleryContainer.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end'
-    });
   }).catch(err => {
     (0, _setMessage.default)(_PNotify.error, 'Что-то пошло не так, попробуй позже', 1000);
     console.log(err);
-  }); // if(apiService.query)
-  // }
-  // setTimeout(loadMore, 2000);
+  });
 }
 
-loadMoreBtn.refs.button.addEventListener('click', onLoad);
-
-_refs.default.searchForm.addEventListener('submit', catchRequest);
-
-arrowUp.refs.arrowUp.addEventListener('click', () => {
+function onArrowUpClick() {
   _refs.default.searchForm.scrollIntoView({
     behavior: 'smooth',
     block: 'start'
   });
-}); // window.addEventListener('scroll', function() {
-//   refs.innerHTML = pageYOffset + 'px';
-// });
-// const container = document.getElementById('body');
-// !!! обработать ошибки
+}
+
+;
+loadMoreBtn.refs.button.addEventListener('click', onLoad);
+
+_refs.default.searchForm.addEventListener('submit', catchRequest);
+
+arrowUp.refs.arrowUp.addEventListener('click', onArrowUpClick); // !!! обработать ошибки
 // пробел
 // webformatURL - ссылка на маленькое изображение для списка карточек
 // largeImageURL - ссылка на большое изображение (смотри пункт 'дополнительно')
@@ -2747,7 +2703,7 @@ arrowUp.refs.arrowUp.addEventListener('click', () => {
 //   "not IE 11",
 //   "maintained node versions"
 // ]
-},{"./sass/gallery.scss":"sass/gallery.scss","@pnotify/core/dist/PNotify.js":"../node_modules/@pnotify/core/dist/PNotify.js","@pnotify/core/dist/PNotify.css":"../node_modules/@pnotify/core/dist/PNotify.css","@pnotify/core/dist/BrightTheme.css":"../node_modules/@pnotify/core/dist/BrightTheme.css","./js/setMessage":"js/setMessage.js","./js/apiService":"js/apiService.js","./js/btnLoadMore":"js/btnLoadMore.js","./js/makesGalleryMarkup":"js/makesGalleryMarkup.js","./js/AppendGalleryMarkup":"js/AppendGalleryMarkup.js","./js/refs":"js/refs.js","./js/arrowUp":"js/arrowUp.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./sass/gallery.scss":"sass/gallery.scss","@pnotify/core/dist/PNotify.js":"../node_modules/@pnotify/core/dist/PNotify.js","@pnotify/core/dist/PNotify.css":"../node_modules/@pnotify/core/dist/PNotify.css","@pnotify/core/dist/BrightTheme.css":"../node_modules/@pnotify/core/dist/BrightTheme.css","./js/setMessage":"js/setMessage.js","./js/apiService":"js/apiService.js","./js/btnLoadMore":"js/btnLoadMore.js","./js/makesGalleryMarkup":"js/makesGalleryMarkup.js","./js/appendGalleryMarkup":"js/appendGalleryMarkup.js","./js/refs":"js/refs.js","./js/arrowUp":"js/arrowUp.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2775,7 +2731,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62844" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62847" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
